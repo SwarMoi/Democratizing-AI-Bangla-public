@@ -3,58 +3,14 @@ import os
 import multiprocessing
 from concurrent.futures import ProcessPoolExecutor
 
-################################
-## <-- Define Directories --> ##
-################################
+#susmita
 
-# <-- For Swarnendu MOITRA --> 
-
-# QMUL - HPC - Apocrita (linux)
-
-# Path to the TSV file containing Bengali words
-# ben_words_file = '/data/interim/unique_words.tsv'
-
-# # Path to the corpus text file
-# ben_corpus_file = '/data/home/mlx057/data/Corpus/data/tokenized_sen_bn.txt'
-
-
-# # Path to the output directory where word-specific text files will be saved
-# output_directory = '/data/interim'
-
-# Personal Laptop "BashBandit" (linux)
-
-# Path to the TSV file containing Bengali words
-ben_words_file = '/media/swarmoi/QM-Drive/Dropbox/SM-Projects/Democratizing AI/Democratizing-AI-Bangla/data/interim/unique_word.tsv'
-
-# Path to the corpus text file
-#ben_corpus_file = '/media/swarmoi/QM-Drive/Dropbox/SAVANT-Personal/Bangla-Corpus/Bangla-Lex-Corpus/raw/tokenized_sample_sen_bn.txt'
-ben_corpus_file = 'data/interim/sample.txt'
-
-# Path to the output directory where word-specific text files will be saved
-output_directory = 'data/interim'
-
-#------------------------------------------------------------------------#
-
-# <-- For Susmita Gangopadhay (windows)--> 
-
-## Path to the TSV file containing Bengali words
-#bengali_words_file = r'C:\Users\gangopsa\Documents\Bengali\word_list\unique_words1.tsv'
-
-## Path to the corpus text file
-#corpus_file = r'C:\Users\gangopsa\Documents\Bengali\tokenized_sen_bn.txt'
-
-
-## Path to the output directory where word-specific text files will be saved
-#output_dir = r'C:\Users\gangopsa\Documents\Bengali\word_sentences_output'
-
-
-# Function to read the corpus in chunks
+# Function to read the corpus in chunks. chunk size should be changed for the code to work faster
 def read_corpus_chunks(file_path, chunk_size=1024*1024):
     """Read the corpus file in chunks."""
     with open(file_path, 'r', encoding='utf-8') as file:
         while True:
             chunk = file.read(chunk_size)
-            print(F"chunkinggg: {chunk}") #debug statement
             if not chunk:
                 break
             yield chunk
@@ -63,8 +19,8 @@ def read_corpus_chunks(file_path, chunk_size=1024*1024):
 def find_sentences_with_word(word, chunk):
     """Find and return sentences containing the specified Bengali word in a chunk of text."""
     # Regex pattern to find sentences with the specific Bengali word
-    # Sentence boundaries include period (.), Bengali Danda (।), and other punctuation.
-    sentence_pattern = re.compile(rf'([^.।!?]*?\b{re.escape(word)}\b[^.।!?]*[.।!?])', re.UNICODE)
+    # Sentence boundaries include period (.), Bengali Danda (?), and other punctuation.
+    sentence_pattern = re.compile(rf'([^.?!?]*?\b{re.escape(word)}\b[^.?!?]*[.?!?])', re.UNICODE)
     sentences = sentence_pattern.findall(chunk)
     #print(sentences)
     return sentences
@@ -74,14 +30,11 @@ def process_word(word, corpus_file, output_dir):
     """Process each word in the corpus, extracting and saving sentences containing that word."""
     try:
         print(f"Processing word: {word}")  # Debug statement
-        print(f"Processing corpus file: {corpus_file}")  # Debug statement
-        
         sentences = []
         for chunk in read_corpus_chunks(corpus_file):
             chunk_sentences = find_sentences_with_word(word, chunk)
             print(chunk_sentences)
             sentences.extend(chunk_sentences)
-            print(f"Sentences adding: {sentences}")
         
         # Only write to file if sentences were found
         if sentences:
@@ -98,7 +51,6 @@ def process_word(word, corpus_file, output_dir):
 if __name__ == '__main__':
     try:
         # Path to the TSV file containing Bengali words
-<<<<<<< HEAD
         bengali_words_file = r'unique_words.tsv'
 
         # Path to the corpus text file
@@ -106,18 +58,6 @@ if __name__ == '__main__':
 
         # Path to the output directory where word-specific text files will be saved
         output_dir = r'word_sentences_output'
-=======
-        bengali_words_file = ben_words_file
-        print(bengali_words_file)
-
-        # Path to the corpus text file
-        corpus_file = ben_corpus_file
-        print(corpus_file[10])
-        print(f"Here is the corpus file: {corpus_file}")
-
-        # Path to the output directory where word-specific text files will be saved
-        output_dir = output_directory
->>>>>>> origin/main
 
         # Create the output directory if it doesn't exist
         os.makedirs(output_dir, exist_ok=True)
@@ -146,3 +86,7 @@ if __name__ == '__main__':
                         print(f"Error in future: {e}")
     except Exception as e:
         print(f"An error occurred: {e}")
+
+
+
+
