@@ -3,7 +3,7 @@ import csv
 import re
 
 # Path to the 'raw' directory
-raw_dir = r'C:\Users\gangopsa\Documents\Bengali\Democratizing-AI-Bangla\data\raw'
+raw_dir = r'data/raw'
 
 # Path to the output TSV file
 output_file = 'unique_words.tsv'
